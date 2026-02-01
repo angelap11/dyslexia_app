@@ -1,0 +1,47 @@
+name: dyslexia_app
+description: "Android application to support children with dyslexia."
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.9.2
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # UI icons (не сметаат, често се користат)
+  cupertino_icons: ^1.0.8
+
+  # Text to Speech
+  flutter_tts: ^3.8.5
+
+  # OCR – image/screenshot to text
+  google_mlkit_text_recognition: ^0.13.0
+
+  # Image / screenshot picker
+  image_picker: ^1.0.7
+
+  # Local storage (settings, preferences)
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
+
+#  # Assets (ќе го додадеме фолдерот после)
+#  assets:
+#    - assets/fonts/
+#
+#  # Custom font for dyslexia
+#  fonts:
+#    - family: DyslexiaFZF
+#      fonts:
+#        - asset: assets/fonts/DyslexiaFZF.ttf
