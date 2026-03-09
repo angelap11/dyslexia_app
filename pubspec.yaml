@@ -10,6 +10,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  file_picker: ^8.0.0
+
 
   # UI icons (не сметаат, често се користат)
   cupertino_icons: ^1.0.8
@@ -35,6 +37,11 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+
+  fonts:
+      - family: DyslexicFont
+        fonts:
+          - asset: assets/fonts/DyslexicFZF Regular.ttf
 
 #  # Assets (ќе го додадеме фолдерот после)
 #  assets:

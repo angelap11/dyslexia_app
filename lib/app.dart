@@ -12,45 +12,56 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Dyslexia App',
       theme: appTheme,
-      home: Scaffold(
-        appBar: AppBar(title: const Text('Dyslexia App')),
-        body: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Builder(
-            builder: (context) {
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => const TtsScreen(),
-                        ),
-                      );
-                    },
-                    child: const Text('🗣 TTS Test'),
+      home: const HomeScreen(),
+    );
+  }
+}
+
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Dyslexia App'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const TtsScreen(),
                   ),
-                  const SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => const ScanScreen(),
-                        ),
-                      );
-                    },
-                    child: const Text('OCR Scan'),
+                );
+              },
+              child: const Text('🗣 TTS Test'),
+            ),
+
+            const SizedBox(height: 20),
+
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const ScanScreen(),
                   ),
-                ],
-              );
-            },
-          ),
+                );
+              },
+              child: const Text('📷 OCR Scan'),
+            ),
+
+          ],
         ),
       ),
     );
   }
 }
-
