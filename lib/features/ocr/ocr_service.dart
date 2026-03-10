@@ -3,7 +3,6 @@ import 'package:image_picker/image_picker.dart';
 class OcrService {
   final TextRecognizer _textRecognizer =
   TextRecognizer(script: TextRecognitionScript.latin);
-  /// Скенира текст од слика (XFile)
   Future<String> scanText(XFile image) async {
     final inputImage = InputImage.fromFilePath(image.path);
     final recognizedText = await _textRecognizer.processImage(inputImage);
@@ -12,7 +11,6 @@ class OcrService {
   void dispose() {
     _textRecognizer.close();
   }
-  /// Избор на слика од галерија или камера
   Future<XFile?> pickImage({bool fromCamera = false}) async {
     final picker = ImagePicker();
     if (fromCamera) {

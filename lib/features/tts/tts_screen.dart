@@ -21,26 +21,26 @@ class _TtsScreenState extends State<TtsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('TTS')),
+      appBar: AppBar(title: const Text('Текст во говор')),
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
           children: [
             TextField(
               controller: _controller,
-              maxLines: 5,
+              maxLines: 8,
+              style: const TextStyle(fontSize: 18),
               decoration: InputDecoration(
-                hintText: 'Внеси го текстот за читање...',
+                hintText: 'Внеси текст...',
+                filled: true,
+                fillColor: Colors.white,
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(20),
+                  borderSide: BorderSide.none,
                 ),
-                suffixIcon: IconButton(
-                  icon: const Icon(Icons.volume_up, color: Colors.blue, size: 30),
-                  onPressed: () {
-                    if (_controller.text.isNotEmpty) {
-                      _tts.speak(_controller.text);
-                    }
-                  },
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(20),
+                  borderSide: const BorderSide(color: Colors.deepPurple, width: 1),
                 ),
               ),
             ),
@@ -59,7 +59,7 @@ class _TtsScreenState extends State<TtsScreen> {
                     }
                   },
                   icon: const Icon(Icons.play_arrow),
-                  label: const Text('Listen'),
+                  label: const Text('Слушај'),
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                   ),
