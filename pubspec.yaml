@@ -10,45 +10,41 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+
   file_picker: ^8.0.0
-
-
-  # UI icons (не сметаат, често се користат)
-  cupertino_icons: ^1.0.8
+  flutter_dotenv: ^5.1.0
 
   # Text to Speech
+  audioplayers: ^5.2.1
   flutter_tts: ^3.8.5
+  path_provider: ^2.1.2
+
+  # UI icons
+  cupertino_icons: ^1.0.8
 
   # OCR – image/screenshot to text
   google_mlkit_text_recognition: ^0.13.0
 
-  # Image / screenshot picker
+  # Image picker
   image_picker: ^1.0.7
 
-  # Local storage (settings, preferences)
+  # Local storage
   hive: ^2.2.3
   hive_flutter: ^1.1.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
   flutter_lints: ^5.0.0
 
 flutter:
   uses-material-design: true
 
-  fonts:
-      - family: DyslexicFont
-        fonts:
-          - asset: assets/fonts/DyslexicFZF Regular.ttf
+  assets:
+    - .env
+    - assets/fonts/
 
-#  # Assets (ќе го додадеме фолдерот после)
-#  assets:
-#    - assets/fonts/
-#
-#  # Custom font for dyslexia
-#  fonts:
-#    - family: DyslexiaFZF
-#      fonts:
-#        - asset: assets/fonts/DyslexiaFZF.ttf
+  fonts:
+    - family: DyslexicFont
+      fonts:
+        - asset: assets/fonts/DyslexicFZF Regular.ttf
