@@ -1,44 +1,151 @@
+// import 'package:flutter/material.dart';
+//
+// import '../../app.dart';
+// import '../home/home_screen.dart';
+// import '../tts/tts_screen.dart';
+// import '../ocr/ocr_screen.dart';
+// import '../profile/profile_screen.dart';
+// import '../../widgets/app_bottom_nav.dart';
+//
+// import 'settings_widgets/settings_header.dart';
+// import 'settings_widgets/switch_setting_card.dart';
+// import 'settings_widgets/slider_setting_card.dart';
+// import 'settings_widgets/language_setting_card.dart';
+//
+// class SettingsScreen extends StatefulWidget {
+//   const SettingsScreen({super.key});
+//
+//   @override
+//   State<SettingsScreen> createState() => _SettingsScreenState();
+// }
+//
+// class _SettingsScreenState extends State<SettingsScreen> {
+//   bool darkTheme = false;
+//   bool dyslexiaFont = false;
+//   double fontSize = 17;
+//
+//   void _open(BuildContext context, Widget screen) {
+//     Navigator.push(
+//       context,
+//       MaterialPageRoute(builder: (_) => screen),
+//     );
+//   }
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+//
+//       body: SafeArea(
+//         child: Column(
+//           children: [
+//             Expanded(
+//               child: SingleChildScrollView(
+//                 padding: const EdgeInsets.fromLTRB(28, 70, 28, 34),
+//                 child: Column(
+//                   crossAxisAlignment: CrossAxisAlignment.start,
+//                   children: [
+//                     const SettingsHeader(),
+//
+//                     const SizedBox(height: 52),
+//
+//                     SwitchSettingCard(
+//                       icon: Icons.dark_mode_outlined,
+//                       title: 'Темна тема',
+//                       subtitle: 'Поудобно за вечерно читање',
+//                       value: darkTheme,
+//                       onChanged: (v) {
+//                         setState(() => darkTheme = v);
+//
+//                         MyApp.of(context)?.updateSettings(
+//                           darkModeValue: v,
+//                         );
+//                       },
+//                     ),
+//
+//                     const SizedBox(height: 20),
+//
+//                     SwitchSettingCard(
+//                       icon: Icons.auto_awesome_outlined,
+//                       title: 'Дислексија фонт',
+//                       subtitle: 'OpenDyslexic + поголем простор',
+//                       value: dyslexiaFont,
+//                       onChanged: (v) {
+//                         setState(() => dyslexiaFont = v);
+//
+//                         MyApp.of(context)?.updateSettings(
+//                           dyslexiaFontValue: v,
+//                         );
+//                       },
+//                     ),
+//
+//                     const SizedBox(height: 20),
+//
+//                     SliderSettingCard(
+//                       fontSize: fontSize,
+//                       onChanged: (v) =>
+//                           setState(() => fontSize = v),
+//                     ),
+//
+//                     const SizedBox(height: 20),
+//
+//                     const LanguageSettingCard(),
+//
+//                     const SizedBox(height: 48),
+//                   ],
+//                 ),
+//               ),
+//             ),
+//
+//             AppBottomNav(
+//               currentIndex: 4,
+//               onHomeTap: () => _open(context, const HomeScreen()),
+//               onReadTap: () => _open(context, const TtsScreen()),
+//               onScanTap: () => _open(context, const OcrScreen()),
+//               onProfileTap: () => _open(context, const ProfileScreen()),
+//               onSettingsTap: () {},
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
+
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../home/home_screen.dart';
 import '../tts/tts_screen.dart';
 import '../ocr/ocr_screen.dart';
 import '../profile/profile_screen.dart';
+import 'provider.dart';
 
-class SettingsScreen extends StatefulWidget {
+class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
 
-  @override
-  State<SettingsScreen> createState() => _SettingsScreenState();
-}
-
-class _SettingsScreenState extends State<SettingsScreen> {
-  bool darkTheme = false;
-  bool dyslexiaFont = false;
-  double fontSize = 17;
-
-  void _goToHome() {
+  void _goToHome(BuildContext context) {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (_) => const HomeScreen()),
     );
   }
 
-  void _goToRead() {
+  void _goToRead(BuildContext context) {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (_) => const TtsScreen()),
     );
   }
 
-  void _goToScan() {
+  void _goToScan(BuildContext context) {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (_) => const OcrScreen()),
     );
   }
 
-  void _goToProfile() {
+  void _goToProfile(BuildContext context) {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (_) => const ProfileScreen()),
@@ -47,6 +154,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final settings = Provider.of<SettingsProvider>(context);
+
     return Scaffold(
       backgroundColor: const Color(0xFFFBFAF3),
       body: SafeArea(
@@ -71,7 +180,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     const SizedBox(height: 14),
 
                     const Text(
-                      'Прилагоди ја апликацијата за себе',
+                      'Прилагоди го читањето според себе',
                       style: TextStyle(
                         color: Color(0xFF505A70),
                         fontSize: 20,
@@ -79,117 +188,59 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       ),
                     ),
 
-                    const SizedBox(height: 52),
-
-                    _SwitchSettingCard(
-                      icon: Icons.dark_mode_outlined,
-                      title: 'Темна тема',
-                      subtitle: 'Поудобно за вечерно читање',
-                      value: darkTheme,
-                      onChanged: (value) {
-                        setState(() {
-                          darkTheme = value;
-                        });
-                      },
-                    ),
-
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 42),
 
                     _SwitchSettingCard(
                       icon: Icons.auto_awesome_outlined,
                       title: 'Дислексија фонт',
-                      subtitle: 'OpenDyslexic + поголем простор',
-                      value: dyslexiaFont,
-                      onChanged: (value) {
-                        setState(() {
-                          dyslexiaFont = value;
-                        });
-                      },
+                      subtitle: 'Прикажување со полесен фонт за читање',
+                      value: settings.dyslexiaFont,
+                      onChanged: settings.setDyslexiaFont,
                     ),
 
                     const SizedBox(height: 20),
 
-                    Container(
-                      padding: const EdgeInsets.all(24),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(26),
-                        border: Border.all(
-                          color: const Color(0xFFE7E1D5),
+                    _SwitchSettingCard(
+                      icon: Icons.center_focus_strong,
+                      title: 'Focus Mode',
+                      subtitle: 'Помалку одвлекување внимание при читање',
+                      value: settings.focusMode,
+                      onChanged: settings.setFocusMode,
+                    ),
+
+                    const SizedBox(height: 20),
+
+                    _SliderSettingCard(
+                      icon: Icons.record_voice_over_rounded,
+                      title: 'Брзина на читање',
+                      valueLabel: settings.speechRate.toStringAsFixed(1),
+                      value: settings.speechRate,
+                      min: 0.1,
+                      max: 1.0,
+                      divisions: 9,
+                      onChanged: settings.setSpeechRate,
+                    ),
+
+                    const SizedBox(height: 20),
+
+                    _SliderSettingCard(
+                      icon: Icons.text_fields_rounded,
+                      title: 'Големина на фонт',
+                      valueLabel: '${settings.fontSize.round()}px',
+                      value: settings.fontSize,
+                      min: 14,
+                      max: 26,
+                      divisions: 12,
+                      onChanged: settings.setFontSize,
+                      preview: Text(
+                        'Преглед на текст',
+                        style: TextStyle(
+                          color: const Color(0xFF07162E),
+                          fontSize: settings.fontSize,
+                          height: 1.4,
+                          fontFamily:
+                          settings.dyslexiaFont ? 'DyslexicFont' : null,
                         ),
-                      ),
-                      child: Column(
-                        children: [
-                          Row(
-                            children: [
-                              const _SettingIcon(
-                                icon: Icons.text_fields_rounded,
-                              ),
-                              const SizedBox(width: 18),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const Text(
-                                      'Големина на фонт',
-                                      style: TextStyle(
-                                        color: Color(0xFF07162E),
-                                        fontSize: 19,
-                                        fontWeight: FontWeight.w800,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 4),
-                                    Text(
-                                      '${fontSize.round()}px',
-                                      style: const TextStyle(
-                                        color: Color(0xFF505A70),
-                                        fontSize: 16,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-
-                          const SizedBox(height: 22),
-
-                          Slider(
-                            value: fontSize,
-                            min: 14,
-                            max: 26,
-                            divisions: 12,
-                            activeColor: const Color(0xFF63B5D2),
-                            inactiveColor: const Color(0xFF343434),
-                            onChanged: (value) {
-                              setState(() {
-                                fontSize = value;
-                              });
-                            },
-                          ),
-
-                          const SizedBox(height: 18),
-
-                          Container(
-                            width: double.infinity,
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 20,
-                              vertical: 20,
-                            ),
-                            decoration: BoxDecoration(
-                              color: const Color(0xFFF1EEE8),
-                              borderRadius: BorderRadius.circular(18),
-                            ),
-                            child: Text(
-                              'Преглед на текст',
-                              style: TextStyle(
-                                color: const Color(0xFF07162E),
-                                fontSize: fontSize,
-                                height: 1.4,
-                              ),
-                            ),
-                          ),
-                        ],
                       ),
                     ),
 
@@ -259,7 +310,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
                     const Center(
                       child: Text(
-                        'ЧитајЛесно · v1.0 · Фронтенд прототип',
+                        'ЧитајЛесно · v1.0',
                         style: TextStyle(
                           color: Color(0xFF505A70),
                           fontSize: 16,
@@ -273,10 +324,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
             _BottomNavBar(
               currentIndex: 4,
-              onHomeTap: _goToHome,
-              onReadTap: _goToRead,
-              onScanTap: _goToScan,
-              onProfileTap: _goToProfile,
+              onHomeTap: () => _goToHome(context),
+              onReadTap: () => _goToRead(context),
+              onScanTap: () => _goToScan(context),
+              onProfileTap: () => _goToProfile(context),
               onSettingsTap: () {},
             ),
           ],
@@ -347,6 +398,105 @@ class _SwitchSettingCard extends StatelessWidget {
             inactiveTrackColor: const Color(0xFFE8E5DC),
             onChanged: onChanged,
           ),
+        ],
+      ),
+    );
+  }
+}
+
+class _SliderSettingCard extends StatelessWidget {
+  final IconData icon;
+  final String title;
+  final String valueLabel;
+  final double value;
+  final double min;
+  final double max;
+  final int divisions;
+  final ValueChanged<double> onChanged;
+  final Widget? preview;
+
+  const _SliderSettingCard({
+    required this.icon,
+    required this.title,
+    required this.valueLabel,
+    required this.value,
+    required this.min,
+    required this.max,
+    required this.divisions,
+    required this.onChanged,
+    this.preview,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(26),
+        border: Border.all(
+          color: const Color(0xFFE7E1D5),
+        ),
+      ),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              _SettingIcon(icon: icon),
+              const SizedBox(width: 18),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: const TextStyle(
+                        color: Color(0xFF07162E),
+                        fontSize: 19,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      valueLabel,
+                      style: const TextStyle(
+                        color: Color(0xFF505A70),
+                        fontSize: 16,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+
+          const SizedBox(height: 22),
+
+          Slider(
+            value: value,
+            min: min,
+            max: max,
+            divisions: divisions,
+            activeColor: const Color(0xFF63B5D2),
+            inactiveColor: const Color(0xFFE8E5DC),
+            onChanged: onChanged,
+          ),
+
+          if (preview != null) ...[
+            const SizedBox(height: 18),
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(
+                horizontal: 20,
+                vertical: 20,
+              ),
+              decoration: BoxDecoration(
+                color: const Color(0xFFF1EEE8),
+                borderRadius: BorderRadius.circular(18),
+              ),
+              child: preview,
+            ),
+          ],
         ],
       ),
     );
