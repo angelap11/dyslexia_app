@@ -16,6 +16,7 @@ class TtsPrimaryButton extends StatelessWidget {
       onTap: onTap,
       borderRadius: BorderRadius.circular(32),
       child: Container(
+        width: double.infinity,
         height: 92,
         decoration: BoxDecoration(
           gradient: const LinearGradient(
@@ -35,6 +36,7 @@ class TtsPrimaryButton extends StatelessWidget {
         child: const Center(
           child: Text(
             'Започни читање',
+            textAlign: TextAlign.center,
             style: TextStyle(
               color: Colors.white,
               fontSize: 20,

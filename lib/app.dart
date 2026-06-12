@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'features/auth/auth_service.dart';
 import 'features/auth/login_screen.dart';
@@ -8,10 +9,6 @@ import 'features/settings/provider.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
-  Future<bool> _checkLoginStatus() async {
-    return AuthService().isLoggedIn();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,35 +26,32 @@ class MyApp extends StatelessWidget {
 
             theme: ThemeData(
               useMaterial3: true,
-
               scaffoldBackgroundColor: const Color(0xFFFBFAF3),
-
-              fontFamily:
-              settings.dyslexiaFont ? 'DyslexicFont' : null,
-
+              fontFamily: settings.dyslexiaFont ? 'DyslexicFont' : null,
               colorScheme: ColorScheme.fromSeed(
                 seedColor: const Color(0xFF63B5D2),
               ),
             ),
 
-            home: FutureBuilder<bool>(
-              future: _checkLoginStatus(),
+            home: StreamBuilder<User?>(
+              stream: FirebaseAuth.instance.authStateChanges(),
               builder: (context, snapshot) {
-                if (!snapshot.hasData) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Scaffold(
-                    body: Center(
-                      child: CircularProgressIndicator(),
-                    ),
+                    body: Center(child: CircularProgressIndicator()),
                   );
                 }
 
-                if (snapshot.data == true) {
+                if (snapshot.hasData && snapshot.data != null) {
                   return const HomeScreen();
                 }
 
                 return const LoginScreen();
               },
             ),
+            // home: const Scaffold(
+            //   body: Center(child: Text("MY APP IS RUNNING")),
+            // ),
           );
         },
       ),

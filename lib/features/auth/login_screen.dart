@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../home/home_screen.dart';
 import 'register_screen.dart';
 import 'auth_service.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -30,9 +31,7 @@ class _LoginScreenState extends State<LoginScreen> {
       return;
     }
 
-    setState(() {
-      isLoading = true;
-    });
+    setState(() => isLoading = true);
 
     final user = await _authService.loginUser(
       email: email,
@@ -41,9 +40,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     if (!mounted) return;
 
-    setState(() {
-      isLoading = false;
-    });
+    setState(() => isLoading = false);
 
     if (user == null) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -77,12 +74,12 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       backgroundColor: const Color(0xFFFBFAF3),
       body: SafeArea(
-        child: Padding(
+        child: SingleChildScrollView(
           padding: const EdgeInsets.all(28),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Spacer(),
+              const SizedBox(height: 80),
 
               const Text(
                 'Добредојде назад',
@@ -152,7 +149,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
 
-              const Spacer(),
+              const SizedBox(height: 80),
             ],
           ),
         ),

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../statistics/stats_screen.dart';
@@ -19,26 +20,17 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final AuthService _authService = AuthService();
-
   String userName = 'Корисник';
 
   @override
   void initState() {
     super.initState();
-    _loadUserData();
-  }
 
-  Future<void> _loadUserData() async {
-    try {
-      final name = await _authService.getCurrentUserName();
-
-      if (!mounted) return;
-
+    FirebaseAuth.instance.authStateChanges().listen((user) {
       setState(() {
-        userName = name ?? 'Корисник';
+        userName = user?.displayName ?? 'Корисник';
       });
-    } catch (_) {}
+    });
   }
 
   void _open(BuildContext context, Widget screen) {

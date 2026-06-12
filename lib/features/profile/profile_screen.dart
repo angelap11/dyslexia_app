@@ -213,12 +213,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Future<void> _loadUserData() async {
-    final name = await _authService.getCurrentUserName();
+    final user = await _authService.currentUser;
 
     if (!mounted) return;
 
     setState(() {
-      userName = name ?? 'Корисник';
+      userName = user?.displayName ?? 'Корисник';
     });
   }
 
