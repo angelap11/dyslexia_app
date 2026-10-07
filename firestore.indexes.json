@@ -1,0 +1,17 @@
+{
+  "indexes": [],
+  "fieldOverrides": [
+    {
+      "collectionGroup": "texts",
+      "fieldPath": "originalText",
+      "ttl": false,
+      "indexes": []
+    },
+    {
+      "collectionGroup": "texts",
+      "fieldPath": "simplifiedText",
+      "ttl": false,
+      "indexes": []
+    }
+  ]
+}

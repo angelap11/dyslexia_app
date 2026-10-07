@@ -1,0 +1,18 @@
+# Web API
+fastapi>=0.115.0
+uvicorn[standard]>=0.32.0
+pydantic>=2.9.0
+python-dotenv>=1.0.1
+
+# ML stack (GPU host required for real Domestic-Yak inference)
+# Install a CUDA-matching torch build from https://pytorch.org when on GPU.
+torch>=2.2.0
+transformers>=4.44.0
+accelerate>=0.33.0
+bitsandbytes>=0.43.0
+sentencepiece>=0.2.0
+protobuf>=4.25.0
+
+# Tests
+httpx>=0.27.0
+pytest>=8.0.0

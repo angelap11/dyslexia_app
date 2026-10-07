@@ -1,237 +1,11 @@
-// import 'package:flutter/material.dart';
-//
-// import '../home/home_screen.dart';
-// import '../statistics/stats_service.dart';
-// import 'statistics_widgets/stat_card.dart';
-//
-// class StatsScreen extends StatefulWidget {
-//   const StatsScreen({super.key});
-//
-//   @override
-//   State<StatsScreen> createState() => _StatsScreenState();
-// }
-//
-// class _StatsScreenState extends State<StatsScreen> {
-//   final StatsService _service = StatsService();
-//
-//   int ocr = 0;
-//   int tts = 0;
-//   int saved = 0;
-//
-//   @override
-//   void initState() {
-//     super.initState();
-//     loadStats();
-//   }
-//
-//   Future<void> loadStats() async {
-//     final o = await _service.getOCRCount();
-//     final t = await _service.getTTSCount();
-//     final s = await _service.getSavedTexts();
-//
-//     setState(() {
-//       ocr = o;
-//       tts = t;
-//       saved = s;
-//     });
-//   }
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-//       appBar: AppBar(
-//         backgroundColor: Colors.transparent,
-//         elevation: 0,
-//         leading: IconButton(
-//           icon: const Icon(Icons.arrow_back),
-//           onPressed: () {
-//             Navigator.pushReplacement(
-//               context,
-//               MaterialPageRoute(builder: (_) => const HomeScreen()),
-//             );
-//           },
-//         ),
-//       ),
-//       body: SafeArea(
-//         child: Column(
-//           children: [
-//             Expanded(
-//               child: Padding(
-//                 padding: const EdgeInsets.all(24),
-//                 child: Column(
-//                   crossAxisAlignment: CrossAxisAlignment.start,
-//                   children: [
-//                     const Text(
-//                       "Статистика",
-//                       style: TextStyle(
-//                         fontSize: 34,
-//                         fontWeight: FontWeight.w800,
-//                         color: Color(0xFF07162E),
-//                       ),
-//                     ),
-//
-//                     const SizedBox(height: 30),
-//
-//                     StatCard(
-//                       title: "Прочитани документи",
-//                       value: ocr.toString(),
-//                       icon: Icons.document_scanner_rounded,
-//                     ),
-//
-//                     StatCard(
-//                       title: "Слушани текстови",
-//                       value: tts.toString(),
-//                       icon: Icons.volume_up,
-//                     ),
-//
-//                     StatCard(
-//                       title: "Зачувани текстови",
-//                       value: saved.toString(),
-//                       icon: Icons.save,
-//                     ),
-//                   ],
-//                 ),
-//               ),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
-
-// import 'package:flutter/material.dart';
-//
-// import '../home/home_screen.dart';
-// import '../statistics/stats_service.dart';
-// import 'statistics_widgets/stat_card.dart';
-// import 'package:fl_chart/fl_chart.dart';
-//
-//
-// class StatsScreen extends StatefulWidget {
-//   const StatsScreen({super.key});
-//
-//   @override
-//   State<StatsScreen> createState() => _StatsScreenState();
-// }
-//
-// class _StatsScreenState extends State<StatsScreen>
-//     with WidgetsBindingObserver {
-//   final StatsService _service = StatsService();
-//
-//   int ocr = 0;
-//   int tts = 0;
-//   int saved = 0;
-//
-//   @override
-//   void initState() {
-//     super.initState();
-//
-//     WidgetsBinding.instance.addObserver(this);
-//     loadStats();
-//   }
-//
-//   @override
-//   void dispose() {
-//     WidgetsBinding.instance.removeObserver(this);
-//     super.dispose();
-//   }
-//
-//   // 🔥 AUTOMATIC REFRESH when returning to app
-//   @override
-//   void didChangeAppLifecycleState(AppLifecycleState state) {
-//     if (state == AppLifecycleState.resumed) {
-//       loadStats();
-//     }
-//   }
-//
-//   Future<void> loadStats() async {
-//     final o = await _service.getOCRCount();
-//     final t = await _service.getTTSCount();
-//     final s = await _service.getSavedTexts();
-//
-//     if (!mounted) return;
-//
-//     setState(() {
-//       ocr = o;
-//       tts = t;
-//       saved = s;
-//     });
-//   }
-//
-//   Future<void> _refresh() async {
-//     await loadStats();
-//   }
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-//
-//       appBar: AppBar(
-//         backgroundColor: Colors.transparent,
-//         elevation: 0,
-//         leading: IconButton(
-//           icon: const Icon(Icons.arrow_back),
-//           onPressed: () {
-//             Navigator.pushReplacement(
-//               context,
-//               MaterialPageRoute(builder: (_) => const HomeScreen()),
-//             );
-//           },
-//         ),
-//       ),
-//
-//       body: SafeArea(
-//         child: RefreshIndicator(
-//           onRefresh: _refresh,
-//           child: ListView(
-//             padding: const EdgeInsets.all(24),
-//             children: [
-//               const Text(
-//                 "Статистика",
-//                 style: TextStyle(
-//                   fontSize: 34,
-//                   fontWeight: FontWeight.w800,
-//                   color: Color(0xFF07162E),
-//                 ),
-//               ),
-//
-//               const SizedBox(height: 30),
-//
-//               StatCard(
-//                 title: "Прочитани документи",
-//                 value: ocr.toString(),
-//                 icon: Icons.document_scanner_rounded,
-//               ),
-//
-//               StatCard(
-//                 title: "Слушани текстови",
-//                 value: tts.toString(),
-//                 icon: Icons.volume_up,
-//               ),
-//
-//               StatCard(
-//                 title: "Зачувани текстови",
-//                 value: saved.toString(),
-//                 icon: Icons.save,
-//               ),
-//             ],
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
-
-
 import 'package:flutter/material.dart';
 
 import '../home/home_screen.dart';
 import '../statistics/stats_service.dart';
-import 'statistics_widgets/stat_card.dart';
-import 'statistics_widgets/stats_pie_chart.dart';
+import 'statistics_widgets/stats_dashboard.dart';
+import '../../widgets/ui/decorative_background.dart';
+import '../../widgets/ui/home_layout.dart';
+import '../../core/theme.dart';
 
 class StatsScreen extends StatefulWidget {
   const StatsScreen({super.key});
@@ -240,13 +14,22 @@ class StatsScreen extends StatefulWidget {
   State<StatsScreen> createState() => _StatsScreenState();
 }
 
-class _StatsScreenState extends State<StatsScreen>
-    with WidgetsBindingObserver {
+class _StatsScreenState extends State<StatsScreen> with WidgetsBindingObserver {
   final StatsService _service = StatsService();
 
   int ocr = 0;
   int tts = 0;
   int saved = 0;
+  int streak = 0;
+  int todayActivity = 0;
+  int todayOcr = 0;
+  int todayTts = 0;
+  int todaySaved = 0;
+  List<DayActivity> weekly = const [];
+  WeekComparison weekComparison = const WeekComparison(
+    thisWeek: 0,
+    lastWeek: 0,
+  );
 
   @override
   void initState() {
@@ -263,91 +46,110 @@ class _StatsScreenState extends State<StatsScreen>
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.resumed) {
-      loadStats();
-    }
+    if (state == AppLifecycleState.resumed) loadStats();
   }
 
   Future<void> loadStats() async {
     final o = await _service.getOCRCount();
     final t = await _service.getTTSCount();
     final s = await _service.getSavedTexts();
+    final readingStreak = await _service.getReadingStreak();
+    final today = await _service.getTodayBreakdown();
+    final week = await _service.getWeeklyActivity();
+    final comparison = await _service.getWeekComparison();
 
     if (!mounted) return;
-
     setState(() {
       ocr = o;
       tts = t;
       saved = s;
+      streak = readingStreak;
+      todayActivity = today.total;
+      todayOcr = today.ocr;
+      todayTts = today.tts;
+      todaySaved = today.saved;
+      weekly = week;
+      weekComparison = comparison;
     });
   }
 
-  Future<void> _refresh() async {
-    await loadStats();
+  void _goBack() {
+    if (Navigator.canPop(context)) {
+      Navigator.pop(context);
+    } else {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const HomeScreen()),
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      backgroundColor: context.appBackground,
+      body: DecorativeBackground(
+        child: SafeArea(
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              final width = constraints.maxWidth;
+              final padding = HomeLayout.horizontalPadding(width);
 
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (_) => const HomeScreen()),
-            );
-          },
-        ),
-      ),
-
-      body: SafeArea(
-        child: RefreshIndicator(
-          onRefresh: _refresh,
-          child: ListView(
-            padding: const EdgeInsets.all(24),
-            children: [
-              const Text(
-                "Статистика",
-                style: TextStyle(
-                  fontSize: 34,
-                  fontWeight: FontWeight.w800,
-                  color: Color(0xFF07162E),
+              return RefreshIndicator(
+                color: AppColors.primary,
+                onRefresh: loadStats,
+                child: SingleChildScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  padding: EdgeInsets.fromLTRB(
+                    padding,
+                    AppSpacing.sm,
+                    padding,
+                    AppSpacing.huge,
+                  ),
+                  child: HomeLayout.constrain(
+                    screenWidth: width,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            IconButton(
+                              onPressed: _goBack,
+                              tooltip: 'Назад',
+                              icon: const Icon(Icons.arrow_back_rounded),
+                            ),
+                            Expanded(
+                              child: Text(
+                                'Мој напредок',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headlineMedium
+                                    ?.copyWith(height: 1.2),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: AppSpacing.xl),
+                        ProgressOverview(
+                          ocr: ocr,
+                          tts: tts,
+                          saved: saved,
+                          streak: streak,
+                          todayActivity: todayActivity,
+                          todayOcr: todayOcr,
+                          todayTts: todayTts,
+                          todaySaved: todaySaved,
+                          weekly: weekly,
+                          weekComparison: weekComparison,
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
-              ),
-
-              const SizedBox(height: 25),
-
-              StatsPieChart(
-                ocr: ocr,
-                tts: tts,
-                saved: saved,
-              ),
-
-              const SizedBox(height: 25),
-
-              StatCard(
-                title: "Прочитани документи",
-                value: ocr.toString(),
-                icon: Icons.document_scanner_rounded,
-              ),
-
-              StatCard(
-                title: "Слушани текстови",
-                value: tts.toString(),
-                icon: Icons.volume_up,
-              ),
-
-              StatCard(
-                title: "Зачувани текстови",
-                value: saved.toString(),
-                icon: Icons.save,
-              ),
-            ],
+              );
+            },
           ),
         ),
       ),

@@ -44,3 +44,44 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Firebase emulator tests
+/firestore_tests/node_modules/
+firebase-debug.log
+firestore-debug.log
+ui-debug.log
+
+# Local secrets and environment files (only the placeholder examples are tracked)
+.env.*
+!.env.example
+*.env
+key.properties
+*.jks
+*.keystore
+*.p12
+*.pfx
+*.pem
+*-firebase-adminsdk-*.json
+*service-account*.json
+*service_account*.json
+
+# Build outputs and archives
+/android/build/
+/android/app/src.zip
+*.apk
+*.aab
+*.ipa
+
+# Tool caches
+node_modules/
+.firebase/
+__pycache__/
+.pytest_cache/
+
+# Local databases and user files
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+*.hive
+*.lock.hive

@@ -1,0 +1,13 @@
+{
+  "name": "chitajlesno-firestore-tests",
+  "private": true,
+  "type": "module",
+  "description": "Phase 1 Firestore rules and offline-queue tests. Run only against the local emulators.",
+  "scripts": {
+    "test": "node --test --test-concurrency=1"
+  },
+  "devDependencies": {
+    "@firebase/rules-unit-testing": "^5.0.2",
+    "firebase": "^12.19.0"
+  }
+}

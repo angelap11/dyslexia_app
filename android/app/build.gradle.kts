@@ -31,6 +31,15 @@ android {
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+
+        // Package both common ABIs. The OS picks the best available at install
+        // time (64-bit devices prefer arm64-v8a when the APK contains it).
+        // Do not filter to a single ABI — that forces slow 32-bit Tesseract on
+        // 64-bit phones when Flutter would otherwise ship arm64-v8a.
+        ndk {
+            abiFilters.clear()
+            abiFilters.addAll(listOf("arm64-v8a", "armeabi-v7a"))
+        }
     }
 
     buildTypes {
@@ -38,6 +47,13 @@ android {
             // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig = signingConfigs.getByName("debug")
+        }
+    }
+
+    packaging {
+        jniLibs {
+            // Keep per-ABI .so folders so arm64 is not dropped from the APK.
+            useLegacyPackaging = false
         }
     }
 }

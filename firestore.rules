@@ -1,0 +1,116 @@
+rules_version = '2';
+
+// Synced: reading preferences (Phase 1) and saved texts (Phase 2).
+// Every other path is denied.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    match /users/{uid}/settings/preferences {
+      allow get: if isOwner(uid);
+      allow create, update: if isOwner(uid)
+        && isValidPreferences(request.resource.data);
+      // list and delete are denied.
+    }
+
+    // One saved text per document. Deleting writes a final tombstone instead
+    // of removing the document, so a stale device cannot bring it back.
+    match /users/{uid}/texts/{textId} {
+      allow get: if isOwner(uid);
+      // The app reads changes in pages of at most 50.
+      allow list: if isOwner(uid) && request.query.limit <= 100;
+      allow create: if isOwner(uid)
+        && textId.matches('^[A-Za-z0-9_-]{8,64}$')
+        && (isLiveText(request.resource.data)
+            || isTombstone(request.resource.data));
+      allow update: if isOwner(uid)
+        && resource.data.deleted == false
+        && request.resource.data.createdAt == resource.data.createdAt
+        && request.resource.data.revision > resource.data.revision
+        && ((isLiveText(request.resource.data)
+              && request.resource.data.source == resource.data.source)
+            || isTombstone(request.resource.data));
+      // delete is denied: tombstones are kept.
+    }
+
+    function isOwner(uid) {
+      return request.auth != null && request.auth.uid == uid;
+    }
+
+    // Must match AppSettings.syncedKeys and AppSettings.isValidSyncedValue.
+    // Bounds are a hair wider than the app's own 1e-9 tolerance.
+    function isValidPreferences(data) {
+      return data.keys().hasOnly([
+          'fontScale', 'dyslexiaFont', 'focusMode', 'highContrastMode',
+          'speechRate', 'readingRulerHeight', 'readingRulerDimOpacity',
+          'schemaVersion', 'updatedAt'
+        ])
+        && data.keys().hasAll(['schemaVersion', 'updatedAt'])
+        && data.schemaVersion is int && data.schemaVersion == 1
+        && data.updatedAt == request.time
+        // fontScale: 14/17 .. 26/17
+        && numberIn(data, 'fontScale', 0.8235294, 1.5294118)
+        && numberIn(data, 'speechRate', 0.299999999, 0.800000001)
+        && numberIn(data, 'readingRulerHeight', 47.999999999, 120.000000001)
+        && numberIn(data, 'readingRulerDimOpacity', 0.199999999, 0.750000001)
+        && boolOrAbsent(data, 'dyslexiaFont')
+        && boolOrAbsent(data, 'focusMode')
+        && boolOrAbsent(data, 'highContrastMode');
+    }
+
+    function numberIn(data, key, min, max) {
+      return !(key in data)
+        || (data[key] is number && data[key] >= min && data[key] <= max);
+    }
+
+    function boolOrAbsent(data, key) {
+      return !(key in data) || data[key] is bool;
+    }
+
+    // Must match SavedTextLimits (200 KiB per text field, 120-char title).
+    function isLiveText(data) {
+      return data.keys().hasOnly([
+          'schemaVersion', 'deleted', 'title', 'source', 'originalText',
+          'simplifiedText', 'favorite', 'createdAt', 'updatedAt', 'revision'
+        ])
+        && data.keys().hasAll([
+          'schemaVersion', 'deleted', 'title', 'source', 'originalText',
+          'createdAt', 'updatedAt', 'revision'
+        ])
+        && data.deleted == false
+        && data.title is string
+        && data.title.size() >= 1 && data.title.size() <= 120
+        && data.source in ['listen', 'camera', 'gallery', 'document', 'legacy']
+        && isTextField(data.originalText)
+        && (!('simplifiedText' in data) || isTextField(data.simplifiedText))
+        && (!('favorite' in data) || data.favorite is bool)
+        && hasValidMeta(data);
+    }
+
+    function isTombstone(data) {
+      return data.keys().hasOnly([
+          'schemaVersion', 'deleted', 'deletedAt', 'createdAt', 'updatedAt',
+          'revision'
+        ])
+        && data.keys().hasAll([
+          'schemaVersion', 'deleted', 'deletedAt', 'createdAt', 'updatedAt',
+          'revision'
+        ])
+        && data.deleted == true
+        && data.deletedAt == request.time
+        && hasValidMeta(data);
+    }
+
+    function isTextField(value) {
+      return value is string && value.size() > 0
+        && value.toUtf8().size() <= 204800;
+    }
+
+    function hasValidMeta(data) {
+      return data.schemaVersion is int && data.schemaVersion == 1
+        && data.updatedAt == request.time
+        && data.createdAt is timestamp
+        && data.createdAt <= request.time + duration.value(1, 'd')
+        && data.revision is int && data.revision >= 1;
+    }
+  }
+}
